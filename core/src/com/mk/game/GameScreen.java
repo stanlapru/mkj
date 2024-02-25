@@ -5,11 +5,8 @@ import java.util.Iterator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -17,8 +14,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -42,12 +37,13 @@ public class GameScreen implements Screen {
         dropImage = new Texture(Gdx.files.internal("drop.png"));
         bucketImage = new Texture(Gdx.files.internal("bucket.png"));
 
-
         dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.mp3"));
 
         camera = new OrthographicCamera();
         camera.position.set(new Vector3(game.width / 2f, game.height / 2f, 0));
         viewport = new ScreenViewport(camera);
+
+        // Начало записи кода
 
         bucket = new Rectangle();
         bucket.x = game.width / 2f - 64f / 2f;
@@ -64,8 +60,10 @@ public class GameScreen implements Screen {
         raindrops = new Array<Rectangle>();
         spawnRaindrop();
 
+        // Конец записи кода
     }
 
+    // Эту функцию необходимо будет написать
     private void spawnRaindrop() {
         Rectangle raindrop = new Rectangle();
         raindrop.x = MathUtils.random(0, game.width-64);
@@ -84,6 +82,8 @@ public class GameScreen implements Screen {
         camera.update();
 
         game.batch.begin();
+
+        // Начало записи кода
 
         for (Rectangle raindrop : raindrops) {
             game.batch.draw(dropImage, raindrop.x, raindrop.y);
@@ -132,6 +132,7 @@ public class GameScreen implements Screen {
                     game.setScreen(new MenuScreen(game));
             }
         }
+        // Конец записи кода
     }
 
     @Override

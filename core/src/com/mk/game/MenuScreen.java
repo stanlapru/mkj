@@ -72,7 +72,4 @@ public class MenuScreen implements Screen {
 
     }
 
-
-    //...Rest of class omitted for succinctness.
-
 }
