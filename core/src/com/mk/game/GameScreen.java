@@ -94,39 +94,6 @@ public class GameScreen implements Screen {
 
         // Начало записи кода
 
-        if (Gdx.input.isTouched()) {
-            Vector3 touchPos = new Vector3();
-            touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-            camera.unproject(touchPos);
-            bucket.x = touchPos.x - 64f/2f;
-        }
-
-        if (bucket.x < 0)
-            bucket.x = 0;
-        if (bucket.x > game.width - 64)
-            bucket.x = game.width - 64;
-
-        if (TimeUtils.nanoTime() - lastDropTime > 1000000000)
-            spawnRaindrop();
-
-        Iterator<Rectangle> iter = raindrops.iterator();
-        while (iter.hasNext()) {
-            Rectangle raindrop = iter.next();
-            raindrop.y -= 200 * Gdx.graphics.getDeltaTime();
-            if (raindrop.y + 64 < 0)
-                iter.remove();
-            if (raindrop.overlaps(bucket)) {
-                dropsGathered++;
-                dropSound.play();
-                iter.remove();
-            }
-            if (raindrop.overlaps(floor)){
-                lives--;
-                iter.remove();
-                if (lives <= 0)
-                    game.setScreen(new MenuScreen(game));
-            }
-        }
         // Конец записи кода
     }
 
