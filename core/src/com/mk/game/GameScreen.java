@@ -8,6 +8,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
@@ -23,13 +24,14 @@ public class GameScreen implements Screen {
     Texture bucketImage;
     Sound dropSound;
     OrthographicCamera camera;
-    private Viewport viewport;
+    private final Viewport viewport;
     Rectangle bucket;
     Rectangle floor;
     Array<Rectangle> raindrops;
     long lastDropTime;
     int dropsGathered;
     int lives = 3;
+    BitmapFont font;
 
     public GameScreen(final MkGame game) {
         this.game = game;
@@ -43,7 +45,7 @@ public class GameScreen implements Screen {
         camera.position.set(new Vector3(game.width / 2f, game.height / 2f, 0));
         viewport = new ScreenViewport(camera);
 
-        // Начало записи кода
+        font = game.makeFont();
 
         bucket = new Rectangle();
         bucket.x = game.width / 2f - 64f / 2f;
@@ -59,11 +61,8 @@ public class GameScreen implements Screen {
 
         raindrops = new Array<Rectangle>();
         spawnRaindrop();
-
-        // Конец записи кода
     }
 
-    // Эту функцию необходимо будет написать
     private void spawnRaindrop() {
         Rectangle raindrop = new Rectangle();
         raindrop.x = MathUtils.random(0, game.width-64);
@@ -83,17 +82,17 @@ public class GameScreen implements Screen {
 
         game.batch.begin();
 
-        // Начало записи кода
-
         for (Rectangle raindrop : raindrops) {
             game.batch.draw(dropImage, raindrop.x, raindrop.y);
         }
 
         game.batch.draw(bucketImage, bucket.x, bucket.y, bucket.width, bucket.height);
 
-        game.font.draw(game.batch, "Score: " + dropsGathered, 0, game.height);
-        game.font.draw(game.batch, "Lives: " + lives, 0, game.height-40);
+        font.draw(game.batch, "Собрано: " + dropsGathered, 0, game.height);
+        font.draw(game.batch, "Жизни: " + lives, 0, game.height-50);
         game.batch.end();
+
+        // Начало записи кода
 
         if (Gdx.input.isTouched()) {
             Vector3 touchPos = new Vector3();
@@ -101,10 +100,6 @@ public class GameScreen implements Screen {
             camera.unproject(touchPos);
             bucket.x = touchPos.x - 64f/2f;
         }
-        if (Gdx.input.isKeyPressed(Keys.LEFT))
-            bucket.x -= 200 * Gdx.graphics.getDeltaTime();
-        if (Gdx.input.isKeyPressed(Keys.RIGHT))
-            bucket.x += 200 * Gdx.graphics.getDeltaTime();
 
         if (bucket.x < 0)
             bucket.x = 0;
@@ -142,18 +137,22 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+
     }
 
     @Override
     public void hide() {
+
     }
 
     @Override
     public void pause() {
+
     }
 
     @Override
     public void resume() {
+
     }
 
     @Override

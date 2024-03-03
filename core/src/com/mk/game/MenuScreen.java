@@ -11,14 +11,17 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class MenuScreen implements Screen {
 
-    final MkGame game;
+    MkGame game;
 
     Camera camera;
     Viewport viewport;
+    TextButton startButton;
+    TextButton exitButton;
 
     public MenuScreen(final MkGame game) {
         this.game = game;
-
+        startButton = new TextButton(game.width/4, game.height/2, "Начать!", game);
+        exitButton = new TextButton(game.width/4, game.height/2-200, "Выход", game);
         camera = new OrthographicCamera();
         camera.position.set(new Vector3(game.width / 2f, game.height / 2f, 0));
         viewport = new ScreenViewport(camera);
@@ -37,13 +40,24 @@ public class MenuScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
 
         game.batch.begin();
-        game.font.draw(game.batch, "Welcome! ", game.width/2f, game.height/2f);
-        game.font.draw(game.batch, "Tap to begin!", game.width/2f, game.height/2f-40);
+
+        startButton.draw(game.batch);
+        exitButton.draw(game.batch);
+
         game.batch.end();
 
         if (Gdx.input.isTouched()) {
-            game.setScreen(new GameScreen(game));
-            dispose();
+            Vector3 touchPos = new Vector3();
+            touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            camera.unproject(touchPos);
+            if (startButton.isHit((int) touchPos.x, (int) touchPos.y)) {
+                game.setScreen(new GameScreen(game));
+                dispose();
+            }
+
+            if (exitButton.isHit((int) touchPos.x, (int) touchPos.y)) {
+                Gdx.app.exit();
+            }
         }
     }
 
@@ -69,7 +83,8 @@ public class MenuScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        startButton.dispose();
+        exitButton.dispose();
     }
 
 }
